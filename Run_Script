@@ -1,8 +1,0 @@
-step00_trimmomatic.sh
-java -XX:MaxHeapSize=16g -Djava.io.tmpdir=./tmp -jar ./program/trimmomatic/bin/trimmomatic.jar PE -threads 8 -phred33 -trimlog log/step00_trimmomatic/0d1.trim.log ./read/0d1_1.fastq.gz ./read/0d1_2.fastq.gz ./trim_read/0d1_1P.fastq.gz ./trim_read/0d1_1U.fastq.gz ./trim_read/0d1_2P.fastq.gz ./trim_read/0d1_2U.fastq.gz  ILLUMINACLIP:./program/trimmomatic/adapters/Adapter.fa:2:30:10:8:FALSE LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:40 > log/step00_trimmomatic/0d1.log 2>&1
-
-step01_hisat2.sh
-program/hisat2 -p 8 --phred33 --dta --dta-cufflinks -x reference/Gmax_275_Cp_Mt.fa -1 trim_paired_read/0d1_1P.fastq.gz -2 trim_paired_read/0d1_2P.fastq.gz --rna-strandnes RF --new-summary 2> log/step01_hisat2/0d1_hisat2.log | program/samtools sort -@ 8 -o result/step01_hisat2/0d1.bam &> log/step01_hisat2/0d1_samtools.log
-
-step02_HTSeq.sh
-htseq-count -m union -s no -f bam -r pos result/step01_hisat2/0d1.bam reference/Gmax_275_Wm82.a2.v1.gene_exons.gtf 1> result/step02_HTSeq/0d1.count 2> log/step02_HTSeq/0d1.log

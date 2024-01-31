@@ -21,7 +21,6 @@ def refresh(proc_LIST):
                 proc.process.kill()
                 proc.status = 'complete'
 
-
 class PROC:
     def __init__(self, command, pid, status):
         self.process = None
@@ -52,18 +51,6 @@ class PROC:
         else:
             print('bug!')
         return self.status
-def send_mail(head,message):
-    server = smtplib.SMTP_SSL('smtp.googlemail.com',465)
-    server.login('kimzz1004', 'qvpd tnoe baiy cffp')
-    server.set_debuglevel(0)
-    fromaddr = 'kimzz1004@gmail.com'
-    toaddrs  = 'gkimzz14@gmail.com'
-
-    header = ("From: %s\r\nTo: %s\rSubject: %s\r\n\r\n"% (fromaddr, toaddrs, head))
-    mailMessage = header + message
-    server.set_debuglevel(0)
-    server.sendmail(fromaddr, toaddrs, mailMessage);
-    server.quit()
 
 parser = OptionParser(usage="""Run annotation.py \n Usage: %prog [options]""")
 parser.add_option("-p","--pid",action = 'store',type = 'string',dest = 'PID',help = "")
@@ -72,10 +59,10 @@ parser.add_option("-i","--input",action = 'store',type = 'string',dest = 'INPUT'
 parser.add_option("-n","--maxProcN",action = 'store',type = 'int',dest = 'maxProcN',help = "")
 parser.add_option("-t","--prefix",action = 'store',type = 'string',dest = 'PREFIX',help = "")
 (opt, args) = parser.parse_args()
-if opt.MESSAGE == None or opt.INPUT == None or opt.maxProcN == None or opt.PREFIX == None:
+if opt.INPUT == None or opt.maxProcN == None or opt.PREFIX == None:
     print('Basic usage')
     print('')
-    print("     queue_jobs.py --input command.sh --prefix NGS01 --message 'NGS01' --maxProcN 10 --pid '1953,1235' ")
+    print("     queue_jobs.py --input command.sh --prefix NGS01 --maxProcN 10 --pid '1953,1235' ")
     print('')
     sys.exit()
 
@@ -86,7 +73,6 @@ else:
 inFile = opt.INPUT
 prefix = opt.PREFIX
 maxProcN = opt.maxProcN
-mailTitle = opt.MESSAGE
 
 
 readyIDX = 0

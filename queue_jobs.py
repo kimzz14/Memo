@@ -21,6 +21,7 @@ def refresh(proc_LIST):
                 proc.process.kill()
                 proc.status = 'complete'
 
+
 class PROC:
     def __init__(self, command, pid, status):
         self.process = None
@@ -54,15 +55,15 @@ class PROC:
 
 parser = OptionParser(usage="""Run annotation.py \n Usage: %prog [options]""")
 parser.add_option("-p","--pid",action = 'store',type = 'string',dest = 'PID',help = "")
-parser.add_option("-m","--message",action = 'store',type = 'string',dest = 'MESSAGE',help = "")
 parser.add_option("-i","--input",action = 'store',type = 'string',dest = 'INPUT',help = "")
 parser.add_option("-n","--maxProcN",action = 'store',type = 'int',dest = 'maxProcN',help = "")
 parser.add_option("-t","--prefix",action = 'store',type = 'string',dest = 'PREFIX',help = "")
+parser.add_option("-r","--refresh",action = 'store',type = 'string',dest = 'REFRESH',help = "")
 (opt, args) = parser.parse_args()
 if opt.INPUT == None or opt.maxProcN == None or opt.PREFIX == None:
     print('Basic usage')
     print('')
-    print("     queue_jobs.py --input command.sh --prefix NGS01 --maxProcN 10 --pid '1953,1235' ")
+    print("     queue_jobs.py --refresh 1 --input command.sh --prefix NGS01 --maxProcN 10 --pid '1953,1235' ")
     print('')
     sys.exit()
 
@@ -73,6 +74,9 @@ else:
 inFile = opt.INPUT
 prefix = opt.PREFIX
 maxProcN = opt.maxProcN
+
+if opt.REFRESH is None:
+    refreshTime = 10
 
 
 readyIDX = 0
@@ -126,7 +130,6 @@ while True:
     else:
         remainProcessTime = (processTime / len(completeProc_LIST)) * remainProcN
 
-
     isDone = False
     for idx in range(maxProcN - len(runProc_LIST)):
         proc = readyProc_LIST[readyIDX]
@@ -140,6 +143,21 @@ while True:
     #print('c', len(runProc_LIST))
     if isChange:
         #save command
+        fout_complete = open(prefix + '_c.sh','w')
+        fout_running  = open(prefix + '_r.sh', 'w')
+        fout_remain   = open(prefix + '_l.sh', 'w')
+        for proc in allProcN_LIST:
+            if proc.status == 'complete' and proc.command != 'NA':
+                fout_complete.write(proc.command + '\n')
+            elif proc.status == 'ready':
+                fout_remain.write(proc.command + '\n')
+            elif proc.status == 'running':
+                fout_remain.write(proc.command + '\n')
+                fout_running.write(proc.command + '\n')
+        fout_complete.close()
+        fout_running.close()
+        fout_remain.close()
+
         context  = []
         context += [time.strftime("%H:%M:%S")]
         context += [str(timedelta(seconds=int(processTime))).rjust(20, ' ')]
@@ -150,5 +168,5 @@ while True:
         fout_log.flush()
     if isDone == True:
         break
-    time.sleep(1)
+    time.sleep(refreshTime)
 fout_log.close()

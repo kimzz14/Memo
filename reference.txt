@@ -1,3 +1,8 @@
+http://39.100.233.196:82/download_genome/Brassica_Genome_data/Brara_Chiifu_V4.1/Brapa_chiifu_v41_genome20230413.fasta.gz
+
+
+
+
 #Malus x robusta (Siberian crab apple)
 https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/963/082/935/GCA_963082935.1_drMalRobu1.1/GCA_963082935.1_drMalRobu1.1_assembly_structure/
 https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/963/082/935/GCA_963082935.1_drMalRobu1.1/GCA_963082935.1_drMalRobu1.1_assembly_report.txt

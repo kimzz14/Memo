@@ -1,0 +1,10 @@
+gatk HaplotypeCaller \
+   -R reference.fasta \
+   -I input.bam \
+   -O output.vcf \
+   --dont-use-soft-clipped-bases \
+   -stand-call-conf 20 \
+   --emit-ref-confidence GVCF \
+   --pcr-indel-model NONE \
+   --split-reads-at-n-cigar \
+   --dont-use-alleles-trigger

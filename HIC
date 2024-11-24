@@ -1,4 +1,0 @@
-https://github.com/kimzz14/Dovetail-OmniC_v01_240801.git
-https://github.com/kimzz14/arima_pipeline_v01_240801.git
-https://github.com/kimzz14/chromap_v0.2.6_240730.git
-https://github.com/kimzz14/yahs_v1.2a.2_240730.git

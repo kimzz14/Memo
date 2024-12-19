@@ -1,0 +1,31 @@
+import pysam
+import numpy as np
+
+
+samfile = pysam.AlignmentFile("Core614.WH111.NGS.01X-R01.bwa-memT01.RGsorted.bam", "rb")
+
+
+data_LIST = np.zeros((100, 10000), dtype=int)
+
+for readIDX, read in enumerate(samfile):
+    if readIDX > 1000: break
+    #print(readIDX)
+
+    read_id = read.query_name
+    seq = read.query_sequence
+    seqLen = len(seq)
+
+    mq = read.mapping_quality
+
+
+    if read.has_tag("NM"):
+        nm_value = read.get_tag("NM")
+
+    data_LIST[mq][nm_value] += 1
+    
+    #print(seqLen, mq, nm_value)
+    #print(seq, read_id)
+
+print(data_LIST)
+
+np.savetxt('my_data.tsv', data_LIST, delimiter='\t', fmt='%d')
